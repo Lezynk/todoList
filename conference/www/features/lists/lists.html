@@ -1,4 +1,7 @@
 <ion-view view-title="Todo Lists">
+  <ion-nav-buttons side="secondary">
+      <button class="button icon ion-plus-round" ui-sref="todolist.lists.create"></button>
+  </ion-nav-buttons>
   <ion-content>
     <ion-list>
       <div class="item" ng-repeat="list in listsCtrl.lists" ui-sref='todolist.todos({listId:list.id})' ng-click='listsCtrl.setCurrentList(list.id);'>
@@ -6,5 +9,10 @@
         <span class="badge badge-assertive">{{list.numberTodo}}</span>
       </div>
     </ion-list>
+    <div class="padding" ng-if="!listsCtrl.lists || listsCtrl.lists.length == 0">
+          <button class="button button-outline button-block button-positive icon ion-plus-round" ui-sref="todolist.lists.create">
+              Add a new List
+          </button>
+    </div>
   </ion-content>
 </ion-view>

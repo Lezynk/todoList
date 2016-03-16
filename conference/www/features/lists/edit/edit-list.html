@@ -1,13 +1,13 @@
-<ion-view view-title="Edit Todo">
+<ion-view view-title="Edit List">
   <ion-nav-buttons side="secondary">
-      <button class="button icon ion-trash-a" ng-click="editTodoCtrl.deleteTodo(editTodoCtrl.todo)"></button>
+      <button class="button icon ion-trash-a" ng-click="editListCtrl.deleteList(editListCtrl.list);"></button>
   </ion-nav-buttons>
   <ion-content>
-    <form ng-submit="editTodoCtrl.updateTodo(editTodoCtrl.editedTodo)">
+    <form ng-submit="editListCtrl.updateList(editListCtrl.editedList)">
       <div class="list">
         <label class="item item-input item-floating-label">
-          <span class="input-label">Edit Todo</span>
-          <input type="text" placeholder="Edit Todo" ng-model="editTodoCtrl.editedTodo.content">
+          <span class="input-label">Edit List</span>
+          <input type="text" placeholder="Edit List" ng-model="editListCtrl.editedList.title">
         </label>
       </div>
       <div class="padding">

@@ -1,10 +1,10 @@
-<ion-view view-title="New Todo">
+<ion-view view-title="New List">
   <ion-content>
-    <form ng-submit="createTodoCtrl.createTodo(createTodoCtrl.newTodo)">
+    <form ng-submit="createListCtrl.createList(createListCtrl.newList)">
       <div class="list">
         <label class="item item-input item-floating-label">
-          <span class="input-label">New Todo</span>
-          <input type="text" placeholder="New Todo" ng-model="createTodoCtrl.newTodo.content">
+          <span class="input-label">New List</span>
+          <input type="text" placeholder="New List" ng-model="createListCtrl.newList.title">
         </label>
       </div>
       <div class="padding">

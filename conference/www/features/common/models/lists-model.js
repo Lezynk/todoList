@@ -21,10 +21,13 @@
             currentList;
         
         model.getLists = getLists;
+        model.createList = createList;
         model.getListById = getListById;
         model.setCurrentList = setCurrentList;
         model.getCurrentList = getCurrentList;
         model.addNumberTodos = addNumberTodos;
+        model.updateList = updateList;
+        model.deleteList = deleteList;
         
         function httpCall(){
             return $http
@@ -56,6 +59,10 @@
             addNumberTodos();
             return lists;
         }
+        function createList(list){
+            list.id = lists.length;
+            lists.push(list);
+        }
         function addNumberTodos(){
             var deferred = $q.defer();
             if(todos){
@@ -80,7 +87,6 @@
             }
             return deferred.promise;
         }
-        
         function getListById(listId){
             var deferred = $q.defer();
             function findList(){
@@ -102,10 +108,22 @@
             return getListById(listId)
                 .then(function(list){
                     currentList = list;
+                    return currentList;
                 });
         }
-        function getCurrentList(){
-            return currentList;
+        function getCurrentList(listId){
+            return $q.when(setCurrentList(listId));
+        }
+        function updateList(list){
+            var index = _.findIndex(lists,function(l){
+                return l.id == list.id;
+            });
+            lists[index] = list;
+        }
+        function deleteList(list){
+            _.remove(lists,function(l){
+                return l.id == list.id;
+            });
         }
     }
     

@@ -50,6 +50,12 @@
                     todosCtrl.lists = result;
                 })
             ;
+            ListsModel
+                .getListById($stateParams.listId)
+                .then(function(result){
+                    todosCtrl.currentList = result;
+                })
+            ;
         }
         function getListId(){
             return $stateParams.listId;

@@ -22,6 +22,7 @@
         model.getTodoById = getTodoById;
         model.updateTodo = updateTodo;
         model.deleteTodo = deleteTodo;
+        model.deleteTodos = deleteTodos;
         
         function httpCall(){
             return $http
@@ -78,6 +79,11 @@
         function deleteTodo(todo){
             _.remove(todos,function(t){
                 return t.id == todo.id;
+            });
+        }
+        function deleteTodos(list){
+            _.remove(todos,function(t){
+                return t.listId == list.id;
             });
         }
     }

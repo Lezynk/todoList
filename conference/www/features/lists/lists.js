@@ -3,7 +3,9 @@
         
     angular
         .module('lists',[ 
-            'models.lists'
+            'models.lists',
+            'createList',
+            'editList'
         ])
         .config(config)
         .controller('ListsCtrl', ListsCtrl)

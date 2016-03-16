@@ -15,7 +15,7 @@
     function config($stateProvider){
         $stateProvider
             .state('todolist.todos.edit',{
-                url:"/todos/:todoId",
+                url:"/todos/:todoId/edit",
                 views:{
                     'main@':{
                         controller: 'EditTodoCtrl as editTodoCtrl',
@@ -30,7 +30,6 @@
       
     function EditTodoCtrl($state, $stateParams, TodosModel, ListsModel){
         var editTodoCtrl = this;
-        editTodoCtrl.getListId = getListId;
         editTodoCtrl.cancelEditing = cancelEditing;
         editTodoCtrl.updateTodo = updateTodo;
         editTodoCtrl.deleteTodo = deleteTodo;
@@ -49,9 +48,6 @@
                     }
                 })
             ; 
-        }
-        function getListId(){
-            return $stateParams.listId;
         }
         function returnToTodos(){
             $state.go('todolist.todos',{

@@ -1,6 +1,6 @@
 <ion-view view-title="List {{todosCtrl.currentList.title}}">
   <ion-nav-buttons side="secondary">
-      <button class="button icon ion-plus-round" ui-sref="todolist.todos.create"></button>
+      <button class="button icon ion-gear-a" ui-sref="todolist.lists.edit({listId:todosCtrl.getListId()})"></button>
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
@@ -13,10 +13,10 @@
         <i class="icon ion-android-arrow-dropright"></i>
       </div>
     </ion-list>
-    <div class="padding" ng-if="todosCtrl.currentList.numberTodo == 0">
-          <button class="button button-block button-positive" ui-sref="todolist.todos.create">
+    <div class="padding">
+          <button class="button button-outline button-block button-positive icon ion-plus-round" ui-sref="todolist.todos.create">
               Add a Todo
           </button>
-      </div>
+    </div>
   </ion-content>
 </ion-view>
