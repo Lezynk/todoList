@@ -1,0 +1,17 @@
+<ion-view view-title="Create Todo">
+  <ion-content>
+    <form ng-submit="createTodoCtrl.createTodo(createTodoCtrl.newTodo)">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">New Todo</span>
+          <input type="text" placeholder="New Todo" ng-model="createTodoCtrl.newTodo.content">
+        </label>
+      </div>
+      <div class="padding">
+          <button type="submit" class="button button-block button-positive">
+              Add
+          </button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
