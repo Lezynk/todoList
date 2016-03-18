@@ -7,16 +7,17 @@
       <div 
         ng-repeat="todo in todosCtrl.todos | filter:{listId:todosCtrl.getListId()}" 
         ui-sref="todolist.todos.edit({todoId:todo.id})" 
-        class="item item-icon-left"
+        class="item item-icon-left" ng-class="{'item-icon-right':todo.location}"
       >
-          {{todo.content}}
         <i class="icon ion-android-arrow-dropright"></i>
+          {{todo.content}}
+        <i class="icon ion-navigate icon-small location-icon" ng-if="todo.location"></i>
       </div>
     </ion-list>
     <div class="padding">
-          <button class="button button-outline button-block button-positive icon ion-plus-round" ui-sref="todolist.todos.create">
-              Add a Todo
-          </button>
+        <button class="button button-outline button-block button-positive icon ion-plus-round" ui-sref="todolist.todos.create">
+            Add a Todo
+        </button>
     </div>
   </ion-content>
 </ion-view>

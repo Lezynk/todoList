@@ -30,9 +30,9 @@
     ListsCtrl.$inject = ['ListsModel'];
     
     function ListsCtrl(ListsModel){
-        var listsCtrl = this;
-        listsCtrl.setCurrentList = ListsModel.setCurrentList;
         
+        var listsCtrl = this;
+
         activate();
         
         function activate(){

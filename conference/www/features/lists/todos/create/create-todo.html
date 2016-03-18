@@ -7,10 +7,22 @@
           <input type="text" placeholder="New Todo" ng-model="createTodoCtrl.newTodo.content">
         </label>
       </div>
+      <div class="row">
+        <div class="col">
+          <div class="button button-block button-positive" ng-click="createTodoCtrl.setLocation();">
+              <i class="icon ion-navigate"></i>
+              {{createTodoCtrl.textLocation}}
+          </div>
+        </div>
+      </div>
       <div class="padding">
-          <button type="submit" class="button button-block button-positive">
-              Add
-          </button>
+        <div style="height:400px;" id="map"></div>
+      </div>
+      <div class="padding">
+        <button type="submit" class="button button-block button-positive">
+            <i class="icon ion-plus-round"></i>
+            Add New Todo
+        </button>
       </div>
     </form>
   </ion-content>

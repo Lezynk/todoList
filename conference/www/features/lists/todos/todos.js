@@ -33,11 +33,16 @@
     function TodosCtrl($stateParams, TodosModel, ListsModel){
         var todosCtrl = this;
         todosCtrl.getListId = getListId;
-        todosCtrl.currentList = ListsModel.getCurrentList();
         
         activate();
         
         function activate(){
+            ListsModel
+                .getListById($stateParams.listId)
+                .then(function(result){
+                    todosCtrl.currentList = result;
+                })
+            ;
             TodosModel
                 .getTodos()
                 .then(function(result){
@@ -48,12 +53,6 @@
                 .getLists()
                 .then(function(result){
                     todosCtrl.lists = result;
-                })
-            ;
-            ListsModel
-                .getListById($stateParams.listId)
-                .then(function(result){
-                    todosCtrl.currentList = result;
                 })
             ;
         }

@@ -24,7 +24,6 @@
         model.createList = createList;
         model.getListById = getListById;
         model.setCurrentList = setCurrentList;
-        model.getCurrentList = getCurrentList;
         model.addNumberTodos = addNumberTodos;
         model.updateList = updateList;
         model.deleteList = deleteList;
@@ -105,14 +104,13 @@
             return deferred.promise;
         }
         function setCurrentList(listId){
+            console.log("go2");
             return getListById(listId)
                 .then(function(list){
+                    console.log("go3");
                     currentList = list;
                     return currentList;
                 });
-        }
-        function getCurrentList(listId){
-            return $q.when(setCurrentList(listId));
         }
         function updateList(list){
             var index = _.findIndex(lists,function(l){

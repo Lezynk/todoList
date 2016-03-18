@@ -10,9 +10,21 @@
           <input type="text" placeholder="Edit Todo" ng-model="editTodoCtrl.editedTodo.content">
         </label>
       </div>
+      <div class="row">
+        <div class="col">
+          <div class="button button-block button-positive" ng-click="editTodoCtrl.setLocation();">
+              <i class="icon ion-navigate "></i>
+              {{editTodoCtrl.textLocation}}
+          </div>
+        </div>
+      </div>
+      <div class="padding">
+        <div style="height:400px;" id="map"></div>
+      </div>
       <div class="padding">
           <button type='submit' class="button button-block button-positive">
-              Edit
+            <i class="icon ion-edit"></i>
+              Edit Todo
           </button>
       </div>
     </form>
