@@ -1,4 +1,5 @@
-<ion-view view-title="List {{todosCtrl.currentList.title}}">
+<ion-view>
+  <ion-nav-title>List: {{todosCtrl.currentList.title}}</ion-nav-title>
   <ion-nav-buttons side="secondary">
       <button class="button icon ion-gear-a" ui-sref="todolist.lists.edit({listId:todosCtrl.getListId()})"></button>
   </ion-nav-buttons>

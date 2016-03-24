@@ -56,9 +56,12 @@
             returnToTodos();
         }
         function createTodo(todo){
-            TodosModel.createTodo(todo);
-            ListsModel.addNumberTodos();
-            returnToTodos();
+            var todoPlainNameTest = /^\s*$/g.test(createTodoCtrl.newTodo.content);
+            if(!todoPlainNameTest){
+                TodosModel.createTodo(todo);
+                ListsModel.addNumberTodos();
+                returnToTodos();
+            }
         }
         function resetForm(){
             createTodoCtrl.newTodo = {

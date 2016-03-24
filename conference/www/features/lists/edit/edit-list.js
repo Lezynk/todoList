@@ -61,8 +61,11 @@
             returnToList();
         }
         function updateList(list){
-            ListsModel.updateList(editListCtrl.editedList);
-            returnToList();
+            var listPlainNameTest = /^\s*$/g.test(editListCtrl.editedList.title);
+            if(!listPlainNameTest){
+                ListsModel.updateList(editListCtrl.editedList);
+                returnToList();
+            }
         }
         function deleteList(list){
             TodosModel.deleteTodos(list);

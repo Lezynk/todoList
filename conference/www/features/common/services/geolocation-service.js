@@ -29,7 +29,7 @@
                 };
             }
             function errorLocation(err) {
-                console.log(err);
+                console.log("Error CordovaGeolocation: "+err);
             }
         }
         function activateShowLocation(lat, lng, zoOm){

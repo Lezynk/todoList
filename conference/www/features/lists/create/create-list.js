@@ -41,9 +41,12 @@
             returnToLists();
         }
         function createList(list){
-            ListsModel.createList(list);
-            ListsModel.addNumberTodos()
-            returnToLists();
+            var listPlainNameTest = /^\s*$/g.test(createListCtrl.newList.title);
+            if(!listPlainNameTest){
+                ListsModel.createList(list);
+                ListsModel.addNumberTodos()
+                returnToLists();
+            }
         }
         function resetForm(){
             createListCtrl.newList = {

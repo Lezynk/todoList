@@ -20,7 +20,7 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.23-alpha/ng-cordova.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.24-alpha/ng-cordova.min.js"></script> 
 
     <!-- Lodash -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
@@ -36,6 +36,7 @@
     <script src="features/common/models/todos-model.js"></script>
     <script src="features/common/models/lists-model.js"></script>
     <script src="features/common/services/geolocation-service.js"></script>
+    <script src="features/common/services/quickaction-service.js"></script>
   </head>
 
   <body ng-app="TodoList">
@@ -44,6 +45,9 @@
       </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view name="main"></ion-nav-view>
+    <ion-footer-bar class="bar-balanced">
+        <div class="title" ui-sref="todolist.lists">Home</div>
+    </ion-footer-bar>
     <script src="https://maps-api-ssl.google.com/maps/api/js?libraries=places&key=AIzaSyD1jDZ9djqI07EOFH749yNXAKviCtlnJUE"></script>
   </body>
 </html>

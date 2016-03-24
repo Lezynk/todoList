@@ -33,9 +33,9 @@
     function TodosCtrl($stateParams, TodosModel, ListsModel){
         var todosCtrl = this;
         todosCtrl.getListId = getListId;
-        
+
         activate();
-        
+
         function activate(){
             ListsModel
                 .getListById($stateParams.listId)

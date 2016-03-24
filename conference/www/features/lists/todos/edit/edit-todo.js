@@ -69,8 +69,11 @@
             returnToTodos();
         }
         function updateTodo(todo){
-            TodosModel.updateTodo(editTodoCtrl.editedTodo);
-            returnToTodos();
+            var todoPlainNameTest = /^\s*$/g.test(editTodoCtrl.editedTodo.content);
+            if(!todoPlainNameTest){
+                TodosModel.updateTodo(editTodoCtrl.editedTodo);
+                returnToTodos();
+            }
         }
         function deleteTodo(todo){
             TodosModel.deleteTodo(todo);

@@ -5,15 +5,16 @@
         .module('TodoList', [
             'ionic',
             'lists',
-            'todos'
+            'todos',
+            'services.quickaction'
         ])
         .run(run)
         .config(config)
     ;
     
-    run.$inject = ['$ionicPlatform'];
+    run.$inject = ['$ionicPlatform', 'QuickActionService'];
     
-    function run($ionicPlatform) {
+    function run($ionicPlatform, QuickActionService) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -25,6 +26,7 @@
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+            QuickActionService.configure();
         });
     }
     
