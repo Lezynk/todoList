@@ -1,8 +1,8 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('editTodo',[ 
+        .module('ctrl.editTodo',[
             'models.todos',
             'models.lists',
             'services.geolocation'
@@ -10,12 +10,12 @@
         .config(config)
         .controller('EditTodoCtrl', EditTodoCtrl)
     ;
-    
+
     config.$inject = ['$stateProvider'];
-    
+
     function config($stateProvider){
         $stateProvider
-            .state('todolist.todos.edit',{
+            .state('todoX.todos.edit',{
                 url:"/todos/:todoId/edit",
                 views:{
                     'main@':{
@@ -26,9 +26,9 @@
             })
         ;
     }
-    
+
     EditTodoCtrl.$inject = ['$state', '$stateParams', 'TodosModel', 'ListsModel', 'GeolocationService'];
-      
+
     function EditTodoCtrl($state, $stateParams, TodosModel, ListsModel, GeolocationService){
         var editTodoCtrl = this,
             locationAvailable;
@@ -36,9 +36,9 @@
         editTodoCtrl.updateTodo = updateTodo;
         editTodoCtrl.deleteTodo = deleteTodo;
         editTodoCtrl.setLocation = setLocation;
-        
+
         activate();
-        
+
         function activate(){
             TodosModel
                 .getTodoById($stateParams.todoId)
@@ -81,10 +81,10 @@
             returnToTodos();
         }
         function setLocation(){
-            
+
             GeolocationService.setLocation()
                 .then(successLocation);
-            
+
             function successLocation(locdata){
                 editTodoCtrl.editedTodo.location = locdata;
                 editTodoCtrl.textLocation = "Edit Location";
@@ -93,5 +93,5 @@
             }
         }
     }
-    
+
 })();

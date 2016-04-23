@@ -1,8 +1,8 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('createTodo',[
+        .module('ctrl.createTodo',[
             'models.todos',
             'models.lists',
             'services.geolocation'
@@ -10,12 +10,12 @@
         .config(config)
         .controller('CreateTodoCtrl', CreateTodoCtrl)
     ;
-    
+
     config.$inject = ['$stateProvider'];
-    
+
     function config($stateProvider){
         $stateProvider
-            .state('todolist.todos.create',{
+            .state('todoX.todos.create',{
                 url:"/todos/create",
                 views:{
                     'main@':{
@@ -26,9 +26,9 @@
             })
         ;
     }
-    
+
     CreateTodoCtrl.$inject = ['$state', '$stateParams', 'TodosModel', 'ListsModel', 'GeolocationService', '$q'];
-    
+
     function CreateTodoCtrl($state, $stateParams, TodosModel, ListsModel, GeolocationService, $q){
         var createTodoCtrl = this;
         createTodoCtrl.getListId = getListId;
@@ -36,10 +36,10 @@
         createTodoCtrl.createTodo = createTodo;
         createTodoCtrl.setLocation = setLocation;
         createTodoCtrl.textLocation = "Add Location";
-        
+
         resetForm();
         activate();
-        
+
         function activate(){
             GeolocationService.activateShowLocation(48.8534100, 2.3488000, 8);
             createTodoCtrl.map = new google.maps.Map(document.getElementById("map"), GeolocationService.mapOptions);
@@ -71,10 +71,10 @@
             };
         }
         function setLocation(){
-            
+
             GeolocationService.setLocation()
                 .then(successLocation);
-            
+
             function successLocation(locdata){
                 createTodoCtrl.newTodo.location = locdata;
                 createTodoCtrl.textLocation = "Edit Location";
@@ -83,5 +83,5 @@
             }
         }
     }
-    
+
 })();

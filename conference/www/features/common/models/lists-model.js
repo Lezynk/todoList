@@ -20,7 +20,7 @@
             todos,
             currentList;
 
-        model.getLists = getLists;
+        model.httpCall = httpCall;
         model.createList = createList;
         model.getListById = getListById;
         model.setCurrentList = setCurrentList;
@@ -31,15 +31,12 @@
         function httpCall(){
             return $http
                         .get(URLS.FETCH)
-                        .then(cacheLists)
+                        .then(treatLists)
                         .catch(errorCall);
         }
-        function getLists(){
-            if(lists){
-                return $q.when(lists);
-            }else{
-                return httpCall();
-            }
+        function treatLists(result){
+            lists = extract(result);
+            return lists;
         }
         function extract(result){
             return result.data;
@@ -53,45 +50,30 @@
             //logger.error(newMessage);
             return $q.reject(result);
         }
-        function cacheLists(result){
-            lists = extract(result);
-            addNumberTodos();
-            return lists;
-        }
-        function createList(list){
-            list.id = lists.length;
-            lists.push(list);
-        }
+
+        // Calculate the number of todos per lists......
         function addNumberTodos(){
-
-          const promises = lists.map(x, i => {
-            TodosModel.httpCall(i+1)
+          lists.map( x => {
+            TodosModel.httpCall(x.id)
+              .then(function(result){
+                x.numberTodo = result.length
+              })
           });
-
-          function numberTodoByList(){
-              var i,j;
-              for(i=0;i<lists.length;i++){
-                  lists[i].numberTodo = 0;
-                  for(j=0;j<todos.length;j++){
-                      if(lists[i].id == todos[j].listId){
-                          lists[i].numberTodo++;
-                      }
-                  }
-              }
-          }
         }
 
         function getListById(listId){
             var deferred = $q.defer();
+
             function findList(){
                 return _.find(lists, function(l){
                     return l.id == listId;
                 });
             }
+
             if(lists){
                 deferred.resolve(findList());
             } else {
-                getLists()
+                httpCall()
                     .then(function(result){
                         deferred.resolve(findList());
                     });
@@ -99,14 +81,13 @@
             return deferred.promise;
         }
         function setCurrentList(listId){
-            console.log("go2");
             return getListById(listId)
                 .then(function(list){
-                    console.log("go3");
                     currentList = list;
                     return currentList;
                 });
         }
+
         function updateList(list){
             var index = _.findIndex(lists,function(l){
                 return l.id == list.id;
@@ -117,6 +98,10 @@
             _.remove(lists,function(l){
                 return l.id == list.id;
             });
+        }
+        function createList(list){
+            list.id = lists.length;
+            lists.push(list);
         }
     }
 

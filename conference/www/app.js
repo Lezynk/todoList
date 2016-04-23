@@ -1,24 +1,24 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('TodoList', [
+        .module('TodoX', [
             'ionic',
-            'lists',
-            'todos',
+            'ctrl.lists',
+            'ctrl.todos',
             'services.quickaction'
         ])
         .run(run)
         .config(config)
     ;
-    
+
     run.$inject = ['$ionicPlatform', 'QuickActionService'];
-    
+
     function run($ionicPlatform, QuickActionService) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
-            if (window.cordova && window.cordova.plugins.Keyboard) {
+            if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
                 cordova.plugins.Keyboard.disableScroll(true);
             }
@@ -29,12 +29,12 @@
             QuickActionService.configure();
         });
     }
-    
+
     config.$inject = ['$stateProvider','$urlRouterProvider'];
-        
+
     function config($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('todolist', {
+            .state('todoX', {
                 url: '',
                 abstract: true
             });

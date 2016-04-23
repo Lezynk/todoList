@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('todos',[
+        .module('ctrl.todos',[
             'models.todos',
             'models.lists',
-            'createTodo',
-            'editTodo'
+            'ctrl.createTodo',
+            'ctrl.editTodo'
         ])
         .config(config)
         .controller('TodosCtrl', TodosCtrl)
@@ -16,21 +16,22 @@
 
     function config($stateProvider){
         $stateProvider
-            .state('todolist.todos',{
-                url:"/lists/:listId",
+            .state('todoX.todos',{
+                url:'/lists/:listId',
                 views:{
                     'main@':{
                         controller: 'TodosCtrl as todosCtrl',
-                        templateUrl: "features/lists/todos/todos.html"
+                        templateUrl: 'features/lists/todos/todos.html'
                     }
                 }
             })
         ;
     }
 
-    TodosCtrl.$inject = ['$stateParams','TodosModel', 'ListsModel'];
+    TodosCtrl.$inject = ['$stateParams', 'TodosModel', 'ListsModel'];
 
     function TodosCtrl($stateParams, TodosModel, ListsModel){
+
         var todosCtrl = this;
         todosCtrl.getListId = getListId;
 
@@ -49,13 +50,8 @@
                     todosCtrl.todos = result;
                 })
             ;
-            ListsModel
-                .getLists()
-                .then(function(result){
-                    todosCtrl.lists = result;
-                })
-            ;
         }
+
         function getListId(){
             return $stateParams.listId;
         }

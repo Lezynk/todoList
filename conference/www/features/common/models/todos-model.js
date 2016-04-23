@@ -13,7 +13,7 @@
     function TodosModel($http, $q) {
         var model = this,
             URLS = {
-                FETCH_HEAD : 'http://localhost:5000/lists',
+                FETCH_HEAD : 'http://localhost:5000/lists/',
                 FETCH_END : '/todos'
             },
             todos;
@@ -27,12 +27,12 @@
 
         // Fetch todos by listid
         function httpCall(listId){
-            return $http
-                        .get(URLS.FETCH_HEAD+listId+URL.FETCH_END)
-                        .then(cacheTodos)
-                        .catch(errorCall);
+          const url = URLS.FETCH_HEAD+listId+URLS.FETCH_END;
+          return $http.get(url)
+            .then(treatTodos)
+            .catch(errorCall);
         }
-        function cacheTodos(result){
+        function treatTodos(result){
             todos = extract(result);
             return todos;
         }

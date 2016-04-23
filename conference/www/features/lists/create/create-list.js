@@ -1,19 +1,19 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('createList',[
+        .module('ctrl.createList',[
             'models.lists'
         ])
         .config(config)
         .controller('CreateListCtrl', CreateListCtrl)
     ;
-    
+
     config.$inject = ['$stateProvider'];
-    
+
     function config($stateProvider){
         $stateProvider
-            .state('todolist.lists.create',{
+            .state('todoX.lists.create',{
                 url:"/create",
                 views:{
                     'main@':{
@@ -24,16 +24,16 @@
             })
         ;
     }
-    
+
     CreateListCtrl.$inject = ['$state', '$stateParams', 'ListsModel'];
-    
+
     function CreateListCtrl($state, $stateParams, ListsModel){
         var createListCtrl = this;
         createListCtrl.cancelCreating = cancelCreating;
         createListCtrl.createList = createList;
-        
+
         resetForm();
-        
+
         function returnToLists(){
             $state.go('todolist.lists')
         }
@@ -54,5 +54,5 @@
             }
         }
     }
-    
+
 })();

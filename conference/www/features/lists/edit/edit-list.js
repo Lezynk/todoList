@@ -1,20 +1,20 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('editList',[ 
+        .module('ctrl.editList',[
             'models.todos',
             'models.lists'
         ])
         .config(config)
         .controller('EditListCtrl', EditListCtrl)
     ;
-    
+
     config.$inject = ['$stateProvider'];
-    
+
     function config($stateProvider){
         $stateProvider
-            .state('todolist.lists.edit',{
+            .state('todoX.lists.edit',{
                 url:"/:listId/edit",
                 views:{
                     'main@':{
@@ -25,17 +25,17 @@
             })
         ;
     }
-    
+
     EditListCtrl.$inject = ['$state', '$stateParams', '$ionicHistory', 'TodosModel', 'ListsModel'];
-      
+
     function EditListCtrl($state, $stateParams, $ionicHistory, TodosModel, ListsModel){
         var editListCtrl = this;
         editListCtrl.cancelEditing = cancelEditing;
         editListCtrl.updateList = updateList;
         editListCtrl.deleteList = deleteList;
-        
+
         activate();
-        
+
         function activate(){
             ListsModel
                 .getListById($stateParams.listId)
@@ -47,7 +47,7 @@
                         returnToList();
                     }
                 })
-            ; 
+            ;
         }
         function returnToList(){
             $ionicHistory.goBack(-1);
@@ -73,5 +73,5 @@
             returnToLists();
         }
     }
-    
+
 })();
