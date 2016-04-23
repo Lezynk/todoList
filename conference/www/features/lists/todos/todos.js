@@ -1,8 +1,8 @@
 (function() {
     'use strict';
-    
+
     angular
-        .module('todos',[ 
+        .module('todos',[
             'models.todos',
             'models.lists',
             'createTodo',
@@ -11,9 +11,9 @@
         .config(config)
         .controller('TodosCtrl', TodosCtrl)
     ;
-    
+
     config.$inject = ['$stateProvider'];
-    
+
     function config($stateProvider){
         $stateProvider
             .state('todolist.todos',{
@@ -27,9 +27,9 @@
             })
         ;
     }
-    
+
     TodosCtrl.$inject = ['$stateParams','TodosModel', 'ListsModel'];
-    
+
     function TodosCtrl($stateParams, TodosModel, ListsModel){
         var todosCtrl = this;
         todosCtrl.getListId = getListId;
@@ -44,7 +44,7 @@
                 })
             ;
             TodosModel
-                .getTodos()
+                .httpCall($stateParams.listId)
                 .then(function(result){
                     todosCtrl.todos = result;
                 })
@@ -60,5 +60,5 @@
             return $stateParams.listId;
         }
     }
-    
+
 })();

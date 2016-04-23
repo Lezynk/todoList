@@ -1,37 +1,40 @@
 (function() {
     'use strict';
-    
+
     angular
         .module('models.todos', [
             'ngResource'
         ])
         .service('TodosModel', TodosModel)
     ;
-        
+
     TodosModel.$inject = ['$http', '$q'];
-    
+
     function TodosModel($http, $q) {
         var model = this,
             URLS = {
-                FETCH : 'data/todos.json'
+                FETCH_HEAD : 'http://localhost:5000/lists',
+                FETCH_END : '/todos'
             },
             todos;
-        
-        model.getTodos = getTodos;
+
         model.createTodo = createTodo;
         model.getTodoById = getTodoById;
         model.updateTodo = updateTodo;
         model.deleteTodo = deleteTodo;
         model.deleteTodos = deleteTodos;
-        
-        function httpCall(){
+        model.httpCall = httpCall;
+
+        // Fetch todos by listid
+        function httpCall(listId){
             return $http
-                        .get(URLS.FETCH)
+                        .get(URLS.FETCH_HEAD+listId+URL.FETCH_END)
                         .then(cacheTodos)
                         .catch(errorCall);
         }
-        function getTodos(){
-            return todos ? $q.when(todos) : httpCall();
+        function cacheTodos(result){
+            todos = extract(result);
+            return todos;
         }
         function extract(result){
             return result.data;
@@ -45,25 +48,26 @@
             //logger.error(newMessage);
             return $q.reject(result);
         }
-        function cacheTodos(result){
-            todos = extract(result);
-            return todos;
-        }
+
+        // Add todo to the object
         function createTodo(todo){
             todo.id = todos.length;
             todos.push(todo);
         }
+
+        // Find todo
         function findTodo(todoId){
             return _.find(todos,function(todo){
                 return todo.id === parseInt(todoId,10);
             });
         }
-        function getTodoById(todoId){
+
+        function getTodoById(todoId, listId){
             var deferred = $q.defer();
             if(todos){
                 deferred.resolve(findTodo(todoId));
             } else {
-                model.getTodos().then(function(){
+                model.httpCall(listId).then(function(){
                     deferred.resolve(findTodo(todoId));
                 });
             }
@@ -73,7 +77,7 @@
             var index = _.findIndex(todos,function(t){
                 return t.id == todo.id;
             });
-            
+
             todos[index] = todo;
         }
         function deleteTodo(todo){
@@ -87,5 +91,5 @@
             });
         }
     }
-    
+
 })();

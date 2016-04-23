@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    
+
     angular
         .module('models.lists', [
             'ngResource',
@@ -8,18 +8,18 @@
         ])
         .service('ListsModel', ListsModel)
     ;
-    
+
     ListsModel.$inject = ['$http', '$q', 'TodosModel'];
 
     function ListsModel($http, $q, TodosModel) {
         var model = this,
             URLS = {
-                FETCH : 'data/lists.json'
+                FETCH : 'http://localhost:5000/lists'
             },
             lists,
             todos,
             currentList;
-        
+
         model.getLists = getLists;
         model.createList = createList;
         model.getListById = getListById;
@@ -27,7 +27,7 @@
         model.addNumberTodos = addNumberTodos;
         model.updateList = updateList;
         model.deleteList = deleteList;
-        
+
         function httpCall(){
             return $http
                         .get(URLS.FETCH)
@@ -63,29 +63,24 @@
             lists.push(list);
         }
         function addNumberTodos(){
-            var deferred = $q.defer();
-            if(todos){
-                deferred.resolve(numberTodoByList());    
-            } else {
-                TodosModel.getTodos()
-                    .then(function(result){
-                        todos = result;
-                        deferred.resolve(numberTodoByList());
-                    });
-            }
-            function numberTodoByList(){
-                var i,j;
-                for(i=0;i<lists.length;i++){
-                    lists[i].numberTodo = 0;
-                    for(j=0;j<todos.length;j++){
-                        if(lists[i].id == todos[j].listId){
-                            lists[i].numberTodo++;
-                        }
-                    }
-                }
-            }
-            return deferred.promise;
+
+          const promises = lists.map(x, i => {
+            TodosModel.httpCall(i+1)
+          });
+
+          function numberTodoByList(){
+              var i,j;
+              for(i=0;i<lists.length;i++){
+                  lists[i].numberTodo = 0;
+                  for(j=0;j<todos.length;j++){
+                      if(lists[i].id == todos[j].listId){
+                          lists[i].numberTodo++;
+                      }
+                  }
+              }
+          }
         }
+
         function getListById(listId){
             var deferred = $q.defer();
             function findList(){
@@ -124,5 +119,5 @@
             });
         }
     }
-    
+
 })();

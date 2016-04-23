@@ -5,9 +5,9 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <div 
-        ng-repeat="todo in todosCtrl.todos | filter:{listId:todosCtrl.getListId()}" 
-        ui-sref="todolist.todos.edit({todoId:todo.id})" 
+      <div
+        ng-repeat="todo in todosCtrl.todos}" 
+        ui-sref="todolist.todos.edit({todoId:todo.id})"
         class="item item-icon-left" ng-class="{'item-icon-right':todo.location}"
       >
         <i class="icon ion-android-arrow-dropright"></i>
