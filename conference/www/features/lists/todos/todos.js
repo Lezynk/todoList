@@ -32,29 +32,30 @@
 
     function TodosCtrl($stateParams, TodosModel, ListsModel){
 
-        var todosCtrl = this;
-        todosCtrl.getListId = getListId;
+      var todosCtrl = this;
 
-        activate();
+      activate();
 
-        function activate(){
-            ListsModel
-                .getListById($stateParams.listId)
-                .then(function(result){
-                    todosCtrl.currentList = result;
-                })
-            ;
-            TodosModel
-                .httpCall($stateParams.listId)
-                .then(function(result){
-                    todosCtrl.todos = result;
-                })
-            ;
+      function activate(){
+        ListsModel
+          .getListById($stateParams.listId)
+          .then(function(result){
+              todosCtrl.currentList = result;
+          })
+          .catch(errorCall);
+        ;
+        TodosModel
+          .readTodo($stateParams.listId)
+          .then(function(result){
+              todosCtrl.todos = result;
+          })
+        ;
+
+        function errorCall(result){
+          console.log('Failure');
         }
-
-        function getListId(){
-            return $stateParams.listId;
-        }
+      }
+      
     }
 
 })();

@@ -31,18 +31,24 @@
 
     function ListsCtrl(ListsModel){
 
-        var listsCtrl = this;
+      var listsCtrl = this;
 
-        activate();
+      activate();
 
-        function activate(){
-            ListsModel
-                .httpCall()
-                .then(function(result){
-                    listsCtrl.lists = result;
-                })
-            ;
+      function activate(){
+        ListsModel
+          .readList()
+          .then(function(result){
+            listsCtrl.lists = result;
+          })
+          .catch(errorCall);
+        ;
+
+        function errorCall(result){
+          console.log('Failure');
         }
+      }
+
     }
 
 })();

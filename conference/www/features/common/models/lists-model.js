@@ -12,97 +12,105 @@
     ListsModel.$inject = ['$http', '$q', 'TodosModel'];
 
     function ListsModel($http, $q, TodosModel) {
-        var model = this,
-            URLS = {
-                FETCH : 'http://localhost:5000/lists'
-            },
-            lists,
-            todos,
-            currentList;
+      var model = this,
+        URLS = {
+          FETCH : 'http://localhost:5000/lists'
+        },
+        lists,
+        todos,
+        currentList;
 
-        model.httpCall = httpCall;
-        model.createList = createList;
-        model.getListById = getListById;
-        model.setCurrentList = setCurrentList;
-        model.addNumberTodos = addNumberTodos;
-        model.updateList = updateList;
-        model.deleteList = deleteList;
+      model.readList = readList;
+      model.createList = createList;
+      model.getListById = getListById;
+      model.updateList = updateList;
+      model.deleteList = deleteList;
 
-        function httpCall(){
-            return $http
-                        .get(URLS.FETCH)
-                        .then(treatLists)
-                        .catch(errorCall);
-        }
-        function treatLists(result){
-            lists = extract(result);
-            return lists;
-        }
-        function extract(result){
-            return result.data;
-        }
-        function errorCall(result){
-            var newMessage = 'XHR Failed';
-            if (result.data && result.data.description) {
-              newMessage = newMessage + '\n' + result.data.description;
-            }
-            result.data.description = newMessage;
-            //logger.error(newMessage);
-            return $q.reject(result);
-        }
+      // ------
+      //  CRUD
+      // ------
 
-        // Calculate the number of todos per lists......
-        function addNumberTodos(){
-          lists.map( x => {
-            TodosModel.httpCall(x.id)
-              .then(function(result){
-                x.numberTodo = result.length
-              })
+      // CREATE
+      function createList(list){
+        list.id = lists.length;
+        lists.push(list);
+      }
+
+      // READ
+      function readList(){
+        return $http
+          .get(URLS.FETCH)
+          .then(treatLists)
+          .catch(errorCall);
+      }
+      function treatLists(result){
+        // Promises array for filling the number of todos per lists
+        var promises = [];
+
+        lists = result.data;
+
+        // Maps over each list, counts the number of todos per each of them
+        // and add the info in the object as 'numberTodo'
+        lists.map(function callToTodos(x){
+          promises.push(
+            new Promise(function(resolve, reject) {
+              TodosModel.readTodo(x.id)
+                .then(function(result){
+                  x.numberTodo = result.length
+                  resolve(x);
+                })
+            })
+          );
+        });
+
+        // Return a big promise that only resolves when all small
+        // are resolved
+        return Promise.all(promises)
+          .then(resp => resp)
+          .catch(errorCall);
+      }
+      function errorCall(result){
+        var errorMessage = 'XHR Failed';
+        if (result.data && result.data.description) {
+          errorMessage = errorMessage + '\n' + result.data.description;
+        }
+        console.log(errorMessage);
+        return $q.reject(result);
+      }
+
+      // UPDATE
+      function updateList(list){
+        var index = _.findIndex(lists,function(l){
+            return l.id == list.id;
+        });
+        lists[index] = list;
+      }
+
+      // DELETE
+      function deleteList(list){
+        _.remove(lists,function(l){
+            return l.id == list.id;
+        });
+      }
+
+      // Sends back one list based on its ID
+      function getListById(listId){
+        var deferred = $q.defer();
+        function findList(){
+          return _.find(lists, function(l){
+              return l.id == listId;
           });
         }
-
-        function getListById(listId){
-            var deferred = $q.defer();
-
-            function findList(){
-                return _.find(lists, function(l){
-                    return l.id == listId;
-                });
-            }
-
-            if(lists){
+        if(lists){
+          deferred.resolve(findList());
+        } else {
+          readList()
+            .then(function(result){
                 deferred.resolve(findList());
-            } else {
-                httpCall()
-                    .then(function(result){
-                        deferred.resolve(findList());
-                    });
-            }
-            return deferred.promise;
+            });
         }
-        function setCurrentList(listId){
-            return getListById(listId)
-                .then(function(list){
-                    currentList = list;
-                    return currentList;
-                });
-        }
+        return deferred.promise;
+      }
 
-        function updateList(list){
-            var index = _.findIndex(lists,function(l){
-                return l.id == list.id;
-            });
-            lists[index] = list;
-        }
-        function deleteList(list){
-            _.remove(lists,function(l){
-                return l.id == list.id;
-            });
-        }
-        function createList(list){
-            list.id = lists.length;
-            lists.push(list);
-        }
     }
-
 })();

@@ -4,7 +4,7 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
-      <div class="item" ng-repeat="list in listsCtrl.lists" ui-sref='todoX.todos({listId:list.id})' ng-click='listsCtrl.setCurrentList(list.id);'>
+      <div class="item" ng-repeat="list in listsCtrl.lists" ui-sref='todoX.todos({listId:list.id})'>
         {{list.title}}
         <span class="badge badge-assertive">{{list.numberTodo}}</span>
       </div>
