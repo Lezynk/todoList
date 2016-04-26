@@ -1,0 +1,32 @@
+<ion-view view-title="Edit Todo">
+  <ion-nav-buttons side="secondary">
+      <button class="button icon ion-trash-a" ng-click="editTodoCtrl.deleteTodo()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <form ng-submit="editTodoCtrl.updateTodo()">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Edit Todo</span>
+          <input type="text" placeholder="Edit Todo" ng-model="editTodoCtrl.editedTodo.content">
+        </label>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="button button-block button-positive" ng-click="editTodoCtrl.setLocation();">
+              <i class="icon ion-navigate "></i>
+              {{editTodoCtrl.textLocation}}
+          </div>
+        </div>
+      </div>
+      <div class="padding">
+        <div style="height:400px;" id="map"></div>
+      </div>
+      <div class="padding">
+          <button type='submit' class="button button-block button-positive">
+            <i class="icon ion-edit"></i>
+              Edit Todo
+          </button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

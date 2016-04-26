@@ -1,0 +1,24 @@
+<ion-view>
+  <ion-nav-title>List: {{todosCtrl.currentList.title}}</ion-nav-title>
+  <ion-nav-buttons side="secondary">
+      <button class="button icon ion-gear-a" ui-sref="todoX.lists.edit({listId:todosCtrl.currentList.id})"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+      <div
+        ng-repeat="todo in todosCtrl.todos"
+        ui-sref="todoX.todos.edit({todoId:todo.id})"
+        class="item item-icon-left" ng-class="{'item-icon-right':todo.location}"
+      >
+        <i class="icon ion-android-arrow-dropright"></i>
+          {{todo.content}}
+        <i class="icon ion-navigate icon-small location-icon" ng-if="todo.location"></i>
+      </div>
+    </ion-list>
+    <div class="padding">
+        <button class="button button-outline button-block button-positive icon ion-plus-round" ui-sref="todoX.todos.create">
+            Add a Todo
+        </button>
+    </div>
+  </ion-content>
+</ion-view>

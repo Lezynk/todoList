@@ -1,0 +1,17 @@
+<ion-view view-title="New List">
+  <ion-content>
+    <form ng-submit="createListCtrl.createList(createListCtrl.newList)">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">New List</span>
+          <input type="text" placeholder="New List" ng-model="createListCtrl.newList.title">
+        </label>
+      </div>
+      <div class="padding">
+          <button type="submit" class="button button-block button-positive">
+              Add
+          </button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
