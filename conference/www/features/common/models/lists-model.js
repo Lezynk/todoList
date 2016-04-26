@@ -9,9 +9,9 @@
         .service('ListsModel', ListsModel)
     ;
 
-    ListsModel.$inject = ['$http', '$q', 'TodosModel'];
+    ListsModel.$inject = ['$http', '$q', 'TodosModel', '$httpParamSerializer'];
 
-    function ListsModel($http, $q, TodosModel) {
+    function ListsModel($http, $q, TodosModel, $httpParamSerializer) {
       var model = this,
         URLS = {
           FETCH : 'http://localhost:5000/lists'
@@ -32,14 +32,18 @@
 
       // CREATE
       function createList(list){
-        list.id = lists.length;
-        lists.push(list);
+        $http({
+          url: URLS.FETCH,
+          method: 'POST',
+          data: $httpParamSerializer(list), // x-www-form compatible
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' // Note the appropriate header
+          }}).catch(errorCall);
       }
 
       // READ
       function readList(){
-        return $http
-          .get(URLS.FETCH)
+        return $http.get(URLS.FETCH)
           .then(treatLists)
           .catch(errorCall);
       }
@@ -63,19 +67,11 @@
           );
         });
 
-        // Return a big promise that only resolves when all small
+        // Returns a big promise that only resolves when all small
         // are resolved
         return Promise.all(promises)
           .then(resp => resp)
           .catch(errorCall);
-      }
-      function errorCall(result){
-        var errorMessage = 'XHR Failed';
-        if (result.data && result.data.description) {
-          errorMessage = errorMessage + '\n' + result.data.description;
-        }
-        console.log(errorMessage);
-        return $q.reject(result);
       }
 
       // UPDATE
@@ -91,6 +87,16 @@
         _.remove(lists,function(l){
             return l.id == list.id;
         });
+      }
+
+      // Error handling
+      function errorCall(result){
+        var errorMessage = 'XHR Failed';
+        if (result.data && result.data.description) {
+          errorMessage = errorMessage + '\n' + result.data.description;
+        }
+        console.log(errorMessage);
+        return $q.reject(result);
       }
 
       // Sends back one list based on its ID

@@ -30,15 +30,16 @@
         });
     }
 
-    config.$inject = ['$stateProvider','$urlRouterProvider'];
+    config.$inject = ['$stateProvider','$urlRouterProvider', '$ionicConfigProvider'];
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $stateProvider
             .state('todoX', {
                 url: '',
                 abstract: true
             });
         $urlRouterProvider.otherwise('/lists');
+        $ionicConfigProvider.views.maxCache(0);
     }
 
 })();

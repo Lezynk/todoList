@@ -10,7 +10,7 @@ var sequelize = new Sequelize('Xavier', 'Xavier', null, {
 sequelize
   .authenticate()
   .then(function(err) {
-    console.log('Connection has been established successfully.');
+    console.log('DB connection has been established successfully.');
   }, function (err) {
     console.log('Unable to connect to the database:', err);
   });

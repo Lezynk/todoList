@@ -1,10 +1,13 @@
 var express         = require('express'),
     methodOverride  = require('method-override'),
     indexRoutes     = require('./routes/index'),
+    bodyParser      = require('body-parser'),
     app             = express();
 
+// Parse the body of requests
+app.use(bodyParser.urlencoded({extended: true}));
 // Add DELETE and PUT methods
-app.use(methodOverride());
+app.use(methodOverride("_method"));
 
 // Serve the Angular/Ionic app
 app.use(express.static('../conference/www'));
