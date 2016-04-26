@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   // Binding tables
-  List.hasMany(Todo);
+  List.hasMany(Todo,{onDelete: 'CASCADE'});
 
   // Feed first data if creating brand new database: uncomment bellow to FEED
   // ----

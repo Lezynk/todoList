@@ -21,7 +21,7 @@ module.exports = (list, todo) => {
   todo.sync({force: true})
     .then(function(){
       var initData = [
-        {content:"Ranger l'appartement", listId: 1},
+        {content:"Ranger l'appartement", location:undefined, listId: 1},
         {content:"Cadeau Bébé !!!", location:{lat:2,lng:1}, listId: 1},
         {content:"OLLAA", location:{lat:3,lng:4}, listId: 3},
         {content:"Cheerz", location:{lat:2,lng:2}, listId: 3},

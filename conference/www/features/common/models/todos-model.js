@@ -32,9 +32,7 @@
 
       // CREATE
       function createTodo(listId, todo){
-        console.log(todo);
         todo.listId = listId;
-        console.log(todo);
         return $http({
           url: URLS.FETCH_HEAD+listId+URLS.FETCH_END,
           method: 'POST',

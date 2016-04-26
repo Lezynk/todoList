@@ -4,7 +4,11 @@ var express     = require('express'),
 
 // READ / GET Lists
 router.get('/lists', function(req, res){
-  models.List.findAll()
+  models.List.findAll({
+      order: [
+        ['updatedAt', 'DESC']
+      ]
+    })
     .then(function(lists){
       res.json(lists);
     })
@@ -13,7 +17,10 @@ router.get('/lists', function(req, res){
 // READ / GET Todos
 router.get('/lists/:id/todos', function(req, res){
   models.Todo.findAll({
-      where : {listId: req.params.id}
+      where : {listId: req.params.id},
+      order: [
+        ['updatedAt', 'DESC']
+      ]
     })
     .then(function(todos){
       res.json(todos);
@@ -38,6 +45,7 @@ router.post('/lists', function(req, res){
 // CREATE / POST Todo
 router.post('/lists/:id/todos', function(req, res){
   if(req.body.content){
+    console.log(req.body);
     models.Todo.create(req.body, function(err, newlyCreated){
       if(err){
         console.log(err);

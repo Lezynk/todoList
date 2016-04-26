@@ -108,7 +108,7 @@
       // Sends back one list based on its ID
       function getListById(listId){
         return readList().then(function(res){
-          return findList(res);
+          return findList(res.data);
         });
 
         function findList(res){

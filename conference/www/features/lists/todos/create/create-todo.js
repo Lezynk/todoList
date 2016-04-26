@@ -67,7 +67,7 @@
         function resetForm(){
             createTodoCtrl.newTodo = {
                 content:'',
-                location:false,
+                location:undefined,
                 listId:$stateParams.listId
             };
         }
