@@ -37,7 +37,7 @@
 
       function activate(){
         ListsModel
-          .readList()
+          .readLists()
           .then(function(result){
             listsCtrl.lists = result;
           })

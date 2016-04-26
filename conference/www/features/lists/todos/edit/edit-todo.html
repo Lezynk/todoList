@@ -1,9 +1,9 @@
 <ion-view view-title="Edit Todo">
   <ion-nav-buttons side="secondary">
-      <button class="button icon ion-trash-a" ng-click="editTodoCtrl.deleteTodo(editTodoCtrl.todo)"></button>
+      <button class="button icon ion-trash-a" ng-click="editTodoCtrl.deleteTodo()"></button>
   </ion-nav-buttons>
   <ion-content>
-    <form ng-submit="editTodoCtrl.updateTodo(editTodoCtrl.editedTodo)">
+    <form ng-submit="editTodoCtrl.updateTodo()">
       <div class="list">
         <label class="item item-input item-floating-label">
           <span class="input-label">Edit Todo</span>

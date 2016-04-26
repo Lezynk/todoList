@@ -39,6 +39,8 @@
                 abstract: true
             });
         $urlRouterProvider.otherwise('/lists');
+
+        // Prevent ionic from cashing any view
         $ionicConfigProvider.views.maxCache(0);
     }
 

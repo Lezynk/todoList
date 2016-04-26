@@ -21,6 +21,7 @@
         currentList;
 
       model.readList = readList;
+      model.readLists = readLists;
       model.createList = createList;
       model.getListById = getListById;
       model.updateList = updateList;
@@ -44,6 +45,10 @@
       // READ
       function readList(){
         return $http.get(URLS.FETCH)
+          .catch(errorCall);
+      }
+      function readLists(){
+        return readList()
           .then(treatLists)
           .catch(errorCall);
       }
@@ -52,13 +57,12 @@
         var promises = [];
 
         lists = result.data;
-
         // Maps over each list, counts the number of todos per each of them
         // and add the info in the object as 'numberTodo'
-        lists.map(function callToTodos(x){
+        lists.map(function(x){
           promises.push(
             new Promise(function(resolve, reject) {
-              TodosModel.readTodo(x.id)
+              TodosModel.readTodos(x.id)
                 .then(function(result){
                   x.numberTodo = result.length
                   resolve(x);
@@ -76,17 +80,19 @@
 
       // UPDATE
       function updateList(list){
-        var index = _.findIndex(lists,function(l){
-            return l.id == list.id;
+        return $http({
+          url: URLS.FETCH+'/'+list.id,
+          method: 'PUT',
+          data: $httpParamSerializer(list), // x-www-form compatible
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' // Note the appropriate header
+          }
         });
-        lists[index] = list;
       }
 
       // DELETE
       function deleteList(list){
-        _.remove(lists,function(l){
-            return l.id == list.id;
-        });
+        return $http.delete(URLS.FETCH+'/'+list.id);
       }
 
       // Error handling
@@ -101,21 +107,15 @@
 
       // Sends back one list based on its ID
       function getListById(listId){
-        var deferred = $q.defer();
-        function findList(){
-          return _.find(lists, function(l){
+        return readList().then(function(res){
+          return findList(res);
+        });
+
+        function findList(res){
+          return _.find(res, function(l){
               return l.id == listId;
           });
         }
-        if(lists){
-          deferred.resolve(findList());
-        } else {
-          readList()
-            .then(function(result){
-                deferred.resolve(findList());
-            });
-        }
-        return deferred.promise;
       }
 
     }

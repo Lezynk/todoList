@@ -41,12 +41,12 @@
 
         function activate(){
             TodosModel
-                .getTodoById($stateParams.todoId)
+                .getTodoById($stateParams.listId, $stateParams.todoId)
                 .then(function(todo){
                     if(todo){
                         editTodoCtrl.todo = todo;
                         editTodoCtrl.editedTodo = angular.copy(todo);
-                        if(editTodoCtrl.todo.location.lat && editTodoCtrl.todo.location.lng){
+                        if(editTodoCtrl.todo.location && editTodoCtrl.todo.location.lat && editTodoCtrl.todo.location.lng){
                             editTodoCtrl.textLocation = "Edit Location";
                             GeolocationService.activateShowLocation(editTodoCtrl.todo.location.lat,editTodoCtrl.todo.location.lng, 14);
                         } else {
@@ -61,24 +61,27 @@
             ;
         }
         function returnToTodos(){
-            $state.go('todolist.todos',{
+            $state.go('todoX.todos',{
                 listId:$stateParams.listId
             });
         }
         function cancelEditing(){
             returnToTodos();
         }
-        function updateTodo(todo){
+        function updateTodo(){
             var todoPlainNameTest = /^\s*$/g.test(editTodoCtrl.editedTodo.content);
             if(!todoPlainNameTest){
-                TodosModel.updateTodo(editTodoCtrl.editedTodo);
-                returnToTodos();
+              TodosModel.updateTodo($stateParams.listId, editTodoCtrl.editedTodo)
+                .then(function(){
+                  returnToTodos();
+                });
             }
         }
-        function deleteTodo(todo){
-            TodosModel.deleteTodo(todo);
-            ListsModel.addNumberTodos();
-            returnToTodos();
+        function deleteTodo(){
+          TodosModel.deleteTodo($stateParams.listId, $stateParams.todoId)
+            .then(function(){
+              returnToTodos();
+            });
         }
         function setLocation(){
 

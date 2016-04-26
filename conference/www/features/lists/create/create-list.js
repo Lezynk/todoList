@@ -35,7 +35,7 @@
         resetForm();
 
         function returnToLists(){
-            $state.go('todoX.lists', {}, { reload: true });
+            $state.go('todoX.lists');
         }
         function cancelCreating(){
             returnToLists();
@@ -43,7 +43,7 @@
         function createList(list){
             var listPlainNameTest = /^\s*$/g.test(createListCtrl.newList.title);
             if(!listPlainNameTest){
-                ListsModel.createList(list);
+                ListsModel.createList(list)
                 returnToLists();
             }
         }

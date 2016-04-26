@@ -1,6 +1,6 @@
 module.exports = (list, todo) => {
 
-  // Create (force) defined table and add test data
+  // Create (force) list table and add test data
   list.sync({force: true})
     .then(function(){
       var initData = [
@@ -17,7 +17,7 @@ module.exports = (list, todo) => {
       })
   });
 
-  // Create (force) defined table and add test data
+  // Create (force) todo table and add test data
   todo.sync({force: true})
     .then(function(){
       var initData = [

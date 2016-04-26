@@ -8,9 +8,9 @@
         .service('TodosModel', TodosModel)
     ;
 
-    TodosModel.$inject = ['$http', '$q'];
+    TodosModel.$inject = ['$http', '$q', '$httpParamSerializer'];
 
-    function TodosModel($http, $q) {
+    function TodosModel($http, $q, $httpParamSerializer) {
       var model = this,
           URLS = {
               FETCH_HEAD : 'http://localhost:5000/lists/',
@@ -24,21 +24,34 @@
       model.deleteTodo = deleteTodo;
       model.deleteTodos = deleteTodos;
       model.readTodo = readTodo;
+      model.readTodos = readTodos;
 
       // ------
       //  CRUD
       // ------
 
       // CREATE
-      function createTodo(todo){
-          todo.id = todos.length;
-          todos.push(todo);
+      function createTodo(listId, todo){
+        console.log(todo);
+        todo.listId = listId;
+        console.log(todo);
+        return $http({
+          url: URLS.FETCH_HEAD+listId+URLS.FETCH_END,
+          method: 'POST',
+          data: $httpParamSerializer(todo), // x-www-form compatible
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' // Note the appropriate header
+          }}).catch(errorCall);
       }
 
       // READ
       function readTodo(listId){
-        const url = URLS.FETCH_HEAD+listId+URLS.FETCH_END;
+        var url = URLS.FETCH_HEAD+listId+URLS.FETCH_END;
         return $http.get(url)
+          .catch(errorCall);
+      }
+      function readTodos(listId){
+        return readTodo(listId)
           .then(treatTodos)
           .catch(errorCall);
       }
@@ -55,18 +68,20 @@
       }
 
       // UPDATE
-      function updateTodo(todo){
-        var index = _.findIndex(todos,function(t){
-          return t.id == todo.id;
+      function updateTodo(listId, todo){
+        return $http({
+          url: URLS.FETCH_HEAD+listId+URLS.FETCH_END+'/'+todo.id,
+          method: 'PUT',
+          data: $httpParamSerializer(todo), // x-www-form compatible
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' // Note the appropriate header
+          }
         });
-        todos[index] = todo;
       }
 
       // DELETE
-      function deleteTodo(todo){
-        _.remove(todos,function(t){
-          return t.id == todo.id;
-        });
+      function deleteTodo(listId, todoId){
+        return $http.delete(URLS.FETCH_HEAD+listId+URLS.FETCH_END+'/'+todoId);
       }
       function deleteTodos(list){
         _.remove(todos,function(t){
@@ -75,23 +90,16 @@
       }
 
       // Sends back one todo based on its ID
-      function getTodoById(todoId, listId){
-        var deferred = $q.defer();
-        // Find todo
-        function findTodo(todoId){
-          return _.find(todos,function(todo){
-            return todo.id === parseInt(todoId,10);
-          });
-        }
-        if(todos){
-          deferred.resolve(findTodo(todoId));
-        } else {
-          readTodo(listId).then(function(){
-            deferred.resolve(findTodo(todoId));
-          });
-        }
-        return deferred.promise;
-      }
+      function getTodoById(listId, todoId){
+        return readTodo(listId).then(function(res){
+          return findTodo(res.data);
+        });
 
+        function findTodo(res){
+          return _.find(res, function(t){
+              return t.id == todoId;
+          });
+        }
+      }
     }
 })();

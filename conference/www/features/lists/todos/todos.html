@@ -1,7 +1,7 @@
 <ion-view>
   <ion-nav-title>List: {{todosCtrl.currentList.title}}</ion-nav-title>
   <ion-nav-buttons side="secondary">
-      <button class="button icon ion-gear-a" ui-sref="todoX.lists.edit({listId:todosCtrl.getListId()})"></button>
+      <button class="button icon ion-gear-a" ui-sref="todoX.lists.edit({listId:todosCtrl.currentList.id})"></button>
   </ion-nav-buttons>
   <ion-content>
     <ion-list>

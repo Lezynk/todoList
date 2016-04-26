@@ -40,22 +40,22 @@
         ListsModel
           .getListById($stateParams.listId)
           .then(function(result){
-              todosCtrl.currentList = result;
+            todosCtrl.currentList = result;
           })
           .catch(errorCall);
         ;
         TodosModel
-          .readTodo($stateParams.listId)
+          .readTodos($stateParams.listId)
           .then(function(result){
-              todosCtrl.todos = result;
+            todosCtrl.todos = result;
           })
         ;
 
         function errorCall(result){
-          console.log('Failure');
+          console.log('Failure', result);
         }
       }
-      
+
     }
 
 })();

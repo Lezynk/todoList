@@ -48,19 +48,20 @@
             return $stateParams.listId;
         }
         function returnToTodos(){
-            $state.go('todolist.todos',{
+            $state.go('todoX.todos',{
                 listId: $stateParams.listId
             });
         }
         function cancelCreating(){
             returnToTodos();
         }
-        function createTodo(todo){
+        function createTodo(){
             var todoPlainNameTest = /^\s*$/g.test(createTodoCtrl.newTodo.content);
             if(!todoPlainNameTest){
-                TodosModel.createTodo(todo);
-                ListsModel.addNumberTodos();
-                returnToTodos();
+                TodosModel.createTodo($stateParams.listId, createTodoCtrl.newTodo)
+                  .then(function(){
+                    returnToTodos();
+                  });
             }
         }
         function resetForm(){
