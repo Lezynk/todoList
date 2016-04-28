@@ -4,7 +4,7 @@
     angular
         .module('constant.config', [])
         .constant('configConstant', {
-          dburl: 'http://localhost:8080'
+          dburl: 'http://10.0.0.10'
         })
     ;
 
