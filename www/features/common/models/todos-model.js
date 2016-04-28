@@ -3,19 +3,16 @@
 
     angular
         .module('models.todos', [
-            'ngResource'
+            'ngResource',
+            'constant.config'
         ])
         .service('TodosModel', TodosModel)
     ;
 
-    TodosModel.$inject = ['$http', '$q', '$httpParamSerializer'];
+    TodosModel.$inject = ['$http', '$q', '$httpParamSerializer', 'configConstant'];
 
-    function TodosModel($http, $q, $httpParamSerializer) {
+    function TodosModel($http, $q, $httpParamSerializer, configConstant) {
       var model = this,
-          URLS = {
-              FETCH_HEAD : 'http://localhost:5000/lists/',
-              FETCH_END : '/todos'
-          },
           todos;
 
       model.createTodo = createTodo;
@@ -34,7 +31,7 @@
       function createTodo(listId, todo){
         todo.listId = listId;
         return $http({
-          url: URLS.FETCH_HEAD+listId+URLS.FETCH_END,
+          url: configConstant.dburl+'/lists/'+listId+'/todos',
           method: 'POST',
           data: $httpParamSerializer(todo), // x-www-form compatible
           headers: {
@@ -44,7 +41,7 @@
 
       // READ
       function readTodo(listId){
-        var url = URLS.FETCH_HEAD+listId+URLS.FETCH_END;
+        var url = configConstant.dburl+'/lists/'+listId+'/todos';
         return $http.get(url)
           .catch(errorCall);
       }
@@ -68,7 +65,7 @@
       // UPDATE
       function updateTodo(listId, todo){
         return $http({
-          url: URLS.FETCH_HEAD+listId+URLS.FETCH_END+'/'+todo.id,
+          url: configConstant.dburl+'/lists/'+listId+'/todos/'+todo.id,
           method: 'PUT',
           data: $httpParamSerializer(todo), // x-www-form compatible
           headers: {
@@ -79,7 +76,7 @@
 
       // DELETE
       function deleteTodo(listId, todoId){
-        return $http.delete(URLS.FETCH_HEAD+listId+URLS.FETCH_END+'/'+todoId);
+        return $http.delete(configConstant.dburl+'/lists/'+listId+'/todos/'+todoId);
       }
       function deleteTodos(list){
         _.remove(todos,function(t){

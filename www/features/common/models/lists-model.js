@@ -4,18 +4,16 @@
     angular
         .module('models.lists', [
             'ngResource',
-            'models.todos'
+            'models.todos',
+            'constant.config'
         ])
         .service('ListsModel', ListsModel)
     ;
 
-    ListsModel.$inject = ['$http', '$q', 'TodosModel', '$httpParamSerializer'];
+    ListsModel.$inject = ['$http', '$q', 'TodosModel', '$httpParamSerializer', 'configConstant'];
 
-    function ListsModel($http, $q, TodosModel, $httpParamSerializer) {
+    function ListsModel($http, $q, TodosModel, $httpParamSerializer, configConstant) {
       var model = this,
-        URLS = {
-          FETCH : 'http://localhost:5000/lists'
-        },
         lists,
         todos,
         currentList;
@@ -34,7 +32,7 @@
       // CREATE
       function createList(list){
         $http({
-          url: URLS.FETCH,
+          url: configConstant.dburl+'/lists',
           method: 'POST',
           data: $httpParamSerializer(list), // x-www-form compatible
           headers: {
@@ -44,7 +42,7 @@
 
       // READ
       function readList(){
-        return $http.get(URLS.FETCH)
+        return $http.get(configConstant.dburl+'/lists')
           .catch(errorCall);
       }
       function readLists(){
@@ -81,7 +79,7 @@
       // UPDATE
       function updateList(list){
         return $http({
-          url: URLS.FETCH+'/'+list.id,
+          url: configConstant.dburl+'/lists/'+list.id,
           method: 'PUT',
           data: $httpParamSerializer(list), // x-www-form compatible
           headers: {
@@ -92,7 +90,7 @@
 
       // DELETE
       function deleteList(list){
-        return $http.delete(URLS.FETCH+'/'+list.id);
+        return $http.delete(configConstant.dburl+'/lists/'+list.id);
       }
 
       // Error handling
